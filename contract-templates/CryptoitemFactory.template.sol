@@ -26,7 +26,7 @@ contract CryptoitemFactory is Factory, Ownable {
   uint256 SINGLE_CRYPTOITEM_OPTION = 0;
   uint256 MULTIPLE_CRYPTOITEM_OPTION = 1;
   uint256 LOOTBOX_OPTION = 2;
-  uint256 QUANTTY_IN_MULTIPLE_CRYPTOITEM_OPTION = 4;
+  uint256 QUANTITY_IN_MULTIPLE_CRYPTOITEM_OPTION = multi_cryptoitem_quantity1;
 
   constructor(address _proxyRegistryAddress, address _nftAddress) public {
     proxyRegistryAddress = _proxyRegistryAddress;
@@ -63,7 +63,7 @@ contract CryptoitemFactory is Factory, Ownable {
     if (_optionId == SINGLE_CRYPTOITEM_OPTION) {
       cic.mintTo(_toAddress);
     } else if (_optionId == MULTIPLE_CRYPTOITEM_OPTION) {
-      for (uint256 i = 0; i < QUANTTY_IN_MULTIPLE_CRYPTOITEM_OPTION; i++) {
+      for (uint256 i = 0; i < QUANTITY_IN_MULTIPLE_CRYPTOITEM_OPTION; i++) {
         cic.mintTo(_toAddress);
       }
     } else if (_optionId == LOOTBOX_OPTION) {
