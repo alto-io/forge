@@ -1,6 +1,6 @@
 const CryptoitemContract = artifacts.require("./Cryptoitem.sol");
 const CryptoitemFactoryContract = artifacts.require("./CryptoitemFactory.sol")
-
+const CryptoitemLootboxContract = artifacts.require("./CryptoitemLootBox.sol")
 
 module.exports = function(deployer, network) {
   // OpenSea proxy registry addresses for rinkeby and mainnet.
@@ -18,6 +18,5 @@ module.exports = function(deployer, network) {
      var cryptoitem = await CryptoitemContract.deployed();
      return cryptoitem.transferOwnership(CryptoitemFactoryContract.address);
    })
-
 
 };

@@ -59,7 +59,7 @@ contract CryptoitemFactory is Factory, Ownable {
     require(canMint(_optionId));
     }
     
-    CryptoitemContract cic = CryptoitemContract(nftAddress);
+    Cryptoitem cic = Cryptoitem(nftAddress);
     if (_optionId == SINGLE_CRYPTOITEM_OPTION) {
       cic.mintTo(_toAddress);
     } else if (_optionId == MULTIPLE_CRYPTOITEM_OPTION) {
@@ -67,7 +67,7 @@ contract CryptoitemFactory is Factory, Ownable {
         cic.mintTo(_toAddress);
       }
     } else if (_optionId == LOOTBOX_OPTION) {
-      CrypotiemLootbox cilb = CryptoitemLootBox(lootBoxNftAddress);
+      CryptoitemLootBox cilb = CryptoitemLootBox(lootBoxNftAddress);
       cilb.mintTo(_toAddress);
     } 
   }
@@ -77,16 +77,16 @@ contract CryptoitemFactory is Factory, Ownable {
       return false;
     }
 
-    CryptoitemContract cic = CryptoitemContract(nftAddress);
+    Cryptoitem cic = Cryptoitem(nftAddress);
     uint256 cryptoitemSupply = cic.totalSupply();
 
     uint256 numItemsAllocated = 0;
     if (_optionId == SINGLE_CRYPTOITEM_OPTION) {
       numItemsAllocated = 1;
     } else if (_optionId == MULTIPLE_CRYPTOITEM_OPTION) {
-      numItemsAllocated = QUANTTY_IN_MULTIPLE_CRYPTOITEM_OPTION;
+      numItemsAllocated = QUANTITY_IN_MULTIPLE_CRYPTOITEM_OPTION;
     } else if (_optionId == LOOTBOX_OPTION) {
-      CryptoitemLootbox cilb = CryptoitemLootbox(lootBoxNftAddress);
+      CryptoitemLootBox cilb = CryptoitemLootBox(lootBoxNftAddress);
       numItemsAllocated = cilb.itemsPerLootbox();
     }
     return cryptoitemSupply < (CRYPTOITEM_SUPPLY - numItemsAllocated);
