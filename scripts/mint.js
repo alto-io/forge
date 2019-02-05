@@ -1,10 +1,14 @@
 const HDWalletProvider = require("truffle-hdwallet-provider")
 var contract_json = require("../build/contracts/Cryptoitem.json");
+var contract_json_factory = require("../build/contracts/CryptoitemFactory.json");
+
 const web3 = require('web3')
 require('dotenv').config()
 
 const NETWORK = process.argv[2];
 const MINT_OPTION = process.argv[3];
+
+const DEFAULT_OPTION_ID = 0;
 
 const SEED_PHRASE = process.env.SEED_PHRASE
 const INFURA_KEY = "3616d3ebf2d1490f93b3ac08eeb907d7" // replace with your own if you want stats via infura.io
@@ -29,6 +33,26 @@ const NFT_ABI = [{
     "type": "function"
 }]
 
+const FACTORY_ABI = [{
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_optionId",
+        "type": "uint256"
+      },
+      {
+        "name": "_toAddress",
+        "type": "address"
+      }
+    ],
+    "name": "mint",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}]
+
+
 var network_id;
 var opensea_link = "opensea.io/get-listed";
 
@@ -45,6 +69,7 @@ switch (NETWORK)
 
 
 const NFT_CONTRACT_ADDRESS = contract_json.networks[network_id].address;
+const FACTORY_CONTRACT_ADDRESS = contract_json_factory.networks[network_id].address;
 
 
     async function main() {
@@ -66,19 +91,22 @@ const NFT_CONTRACT_ADDRESS = contract_json.networks[network_id].address;
             case "all":
                 var quantity = require("../cryptoitem-metadata-server/local.db.json").item.length;
 
-                const nftContract = new web3Instance.eth.Contract(NFT_ABI, NFT_CONTRACT_ADDRESS, { gasLimit: "1000000" })
+                var gp = await web3Instance.eth.getGasPrice();
+                const factoryContract = new web3Instance.eth.Contract(FACTORY_ABI, FACTORY_CONTRACT_ADDRESS, { gasPrice: gp, gasLimit: "6712388" })
 
                 for (var i = 0; i < quantity; i++) {
-                    const result = await nftContract.methods.mintTo(OWNER_ADDRESS).send({ from: OWNER_ADDRESS });
-                    console.log("Minted " + (i + 1) + " of " + quantity + ". Transaction: " + result.transactionHash)
+                    console.log("Minting " + (i + 1) + " of " + quantity + ".");
+                    const result = await factoryContract.methods.mint(DEFAULT_OPTION_ID, OWNER_ADDRESS).send({ from: OWNER_ADDRESS });
+                    console.log(" Transaction: " + result.transactionHash);
                 }
 
 
                 console.log("\nDone. \n\nCryptoitem Contract Address: \n" + NFT_CONTRACT_ADDRESS);
                 console.log("\nInput the address in a marketplace to view (ex: " + opensea_link + ")");
-                provider.engine.stop();
             break;
         }
+
+        provider.engine.stop();
     }
 
 

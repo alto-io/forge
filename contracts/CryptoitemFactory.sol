@@ -35,11 +35,11 @@ contract CryptoitemFactory is Factory, Ownable {
   }
 
   function name() external view returns (string) {
-    return "Alto Test Cryptoitems Factory";
+    return "Cryptoitem Demo Collection Factory";
   }
 
   function symbol() external view returns (string) {
-    return "ATCF";
+    return "CIDCF";
   }
 
   function supportsFactoryInterface() public view returns (bool) {

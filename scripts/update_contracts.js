@@ -1,5 +1,5 @@
 var fs = require('fs')
-var metadata_config = require("../cryptoitem-metadata-server/package.json").config;
+var metadata_config = require("../cryptoitem-metadata-server/local.db.json").config;
 
 console.log("=======================")
 console.log("Updating contract info based on metadata server...")

@@ -12,8 +12,8 @@ module.exports = function(deployer, network) {
   }
 
   
-  deployer.deploy(CryptoitemContract, proxyRegistryAddress, {gas: 5000000}).then(() => {
-     return deployer.deploy(CryptoitemFactoryContract, proxyRegistryAddress, CryptoitemContract.address, {gas: 7000000});
+  deployer.deploy(CryptoitemContract, proxyRegistryAddress, {gas: 6712388}).then(() => {
+     return deployer.deploy(CryptoitemFactoryContract, proxyRegistryAddress, CryptoitemContract.address, {gas: 6712388});
    }).then(async() => {
      var cryptoitem = await CryptoitemContract.deployed();
      return cryptoitem.transferOwnership(CryptoitemFactoryContract.address);

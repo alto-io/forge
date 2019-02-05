@@ -4,7 +4,7 @@ import "./TradeableERC721Token.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract Cryptoitem is TradeableERC721Token {
-  constructor(address _proxyRegistryAddress) TradeableERC721Token("Alto Test Cryptoitems", "ATC", _proxyRegistryAddress) public {  }
+  constructor(address _proxyRegistryAddress) TradeableERC721Token("Cryptoitem Demo Collection", "CIDC", _proxyRegistryAddress) public {  }
 
   function baseTokenURI() public view returns (string) {
     return "https://cimds.herokuapp.com/item/";

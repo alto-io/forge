@@ -4,11 +4,11 @@
   "description": "Create cryptoitems for players to use in your game.",
   "main": "index.js",
   "scripts": {
-    "mint-all": "node scripts/mint.js $npm_package_config_network all",
-    "mint-all-windows": "node scripts/mint.js %npm_package_config_network% all",
+    "sell": "node scripts/sell_opensea.js",
+    "mint": "cross-conf-env node scripts/mint.js npm_package_config_network all",
     "update-contracts": "node scripts/update_contracts.js",
-    "forge": "npm run update-contracts && truffle deploy --network $npm_package_config_network && npm run mint-all",
-    "forge-windows": "npm run update-contracts && truffle.cmd deploy --network %npm_package_config_network% && npm run mint-all-windows"
+    "forge": "npm run update-contracts && truffle deploy --network $npm_package_config_network && npm run mint",
+    "forge-windows": "npm run update-contracts && truffle.cmd deploy --network %npm_package_config_network% && npm run mint"
   },
   "repository": {
     "type": "git",
@@ -39,6 +39,9 @@
   "engines": {
     "node": "8.11.x",
     "npm": "5.6.x"
+  },
+  "devDependencies": {
+    "cross-conf-env": "^1.1.2"
   },
   "config": {
     "network": "rinkeby"

@@ -10,7 +10,7 @@ contract CryptoitemLootBox is TradeableERC721Token {
     uint256 OPTION_ID = 0;
     address factoryAddress;
 
-    constructor(address _proxyRegistryAddress, address _factoryAddress) TradeableERC721Token("Alto Test Cryptoitems Loot Box", "ATCLB", _proxyRegistryAddress) public {
+    constructor(address _proxyRegistryAddress, address _factoryAddress) TradeableERC721Token("Cryptoitem Demo Collection Loot Box", "CIDCLB", _proxyRegistryAddress) public {
         factoryAddress = _factoryAddress;
     }
 
