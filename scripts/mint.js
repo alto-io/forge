@@ -31,7 +31,22 @@ const NFT_ABI = [{
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
-}]
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+        {
+            "name": "",
+            "type": "uint256"
+        }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
 
 const FACTORY_ABI = [{
     "constant": false,
@@ -89,20 +104,36 @@ const FACTORY_CONTRACT_ADDRESS = contract_json_factory.networks[network_id].addr
         switch (MINT_OPTION) {
 
             case "all":
-                var quantity = require("../cryptoitem-metadata-server/local.db.json").item.length;
+                var config = require("../cryptoitem-metadata-server/local.db.json").config;
+                var quantity = config.initial_quantity_to_pre_mint;
+                var pre_mint_items = config.pre_mint_items;
 
-                var gp = await web3Instance.eth.getGasPrice();
-                const factoryContract = new web3Instance.eth.Contract(FACTORY_ABI, FACTORY_CONTRACT_ADDRESS, { gasPrice: gp, gasLimit: "6712388" })
+                if (pre_mint_items)
+                {
 
-                for (var i = 0; i < quantity; i++) {
-                    console.log("Minting " + (i + 1) + " of " + quantity + ".");
-                    const result = await factoryContract.methods.mint(DEFAULT_OPTION_ID, OWNER_ADDRESS).send({ from: OWNER_ADDRESS });
-                    console.log(" Transaction: " + result.transactionHash);
+                    const nftContract = new web3Instance.eth.Contract(NFT_ABI, NFT_CONTRACT_ADDRESS, { gasPrice: gp, gasLimit: "6712388" })
+                    const nftTotalSupply = await nftContract.methods.totalSupply().call();
+
+                    console.log("=======================")
+                    console.log(nftTotalSupply + " already minted.");
+                    console.log(quantity + " total items to mint.");
+
+                    var gp = await web3Instance.eth.getGasPrice();
+                    const factoryContract = new web3Instance.eth.Contract(FACTORY_ABI, FACTORY_CONTRACT_ADDRESS, { gasPrice: gp, gasLimit: "6712388" })
+
+                    for (var i = nftTotalSupply; i < quantity; i++) {
+                        console.log("Minting " + (i + 1) + " of " + quantity + ".");
+                        const result = await factoryContract.methods.mint(DEFAULT_OPTION_ID, OWNER_ADDRESS).send({ from: OWNER_ADDRESS });
+                        console.log(" Transaction: " + result.transactionHash);
+                    }
+
+
+                    console.log("=======================")
+                    console.log("=======================")
+                    console.log("\nDone. \n\nCryptoitem Contract Address: \n" + NFT_CONTRACT_ADDRESS);
+                    console.log("\nInput the address in a marketplace to view (ex: " + opensea_link + ")");
+
                 }
-
-
-                console.log("\nDone. \n\nCryptoitem Contract Address: \n" + NFT_CONTRACT_ADDRESS);
-                console.log("\nInput the address in a marketplace to view (ex: " + opensea_link + ")");
             break;
         }
 
